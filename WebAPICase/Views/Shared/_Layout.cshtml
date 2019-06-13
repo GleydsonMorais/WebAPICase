@@ -7,10 +7,12 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,9 +24,33 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Login", "Login", "Home", new { area = "" }, null)</li>
+
+                    @if (Session["NomeUsuario"] != null)
+                    {
+                        <li>@Html.ActionLink("Usuarios", "Usuario", "Home", null, null)</li>
+                        <li>@Html.ActionLink("Historico", "Historico", "Home", null, null)</li>
+                    }
+
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
+
+                @if (Session["NomeUsuario"] != null)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Sair", "Logout", "Home", null, null)</li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { @class = "form-inline", @style = "margin-top: 10px;" }))
+                        {
+                            @Html.TextBox("usuario", "", new { @class = "form-control", @placeholder = "Usuario" })
+                            @Html.TextBox("senha", "", new { @type = "password", @class = "form-control", @placeholder = "Senha" })
+                            <button class="btn btn-primary form-control">Entrar</button>
+                        }
+                    </ul>
+                }
             </div>
         </div>
     </div>
@@ -39,5 +65,49 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    @* Itens da Notificação *@
+    <input type="hidden" id="success" value="@TempData["success"]" />
+    <input type="hidden" id="info" value="@TempData["info"]" />
+    <input type="hidden" id="warning" value="@TempData["warning"]" />
+    <input type="hidden" id="error" value="@TempData["error"]" />
+
+    <script type="text/javascript" lang="pt-br">
+        $(document).ready( function () {
+            $('#dataTable').DataTable();
+        });
+
+        $(function () {
+            var displayMessage = function (message, msgType) {
+
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+
+                toastr[msgType](message);
+            };
+
+            if ($('#success').val()) { displayMessage($('#success').val(), 'success'); }
+            if ($('#info').val()) { displayMessage($('#info').val(), 'info'); }
+            if ($('#warning').val()) { displayMessage($('#warning').val(), 'warning'); }
+            if ($('#error').val()) { displayMessage($('#error').val(), 'error'); }
+        });
+    </script>
 </body>
 </html>

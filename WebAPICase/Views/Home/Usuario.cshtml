@@ -1,0 +1,187 @@
+﻿@model IQueryable<WebAPICase.Models.Usuario>
+
+    <div class="container" style="margin-top: 10px;">
+        
+        <button type="button" class="btn btn-success btn-sm pull-right" style="margin-bottom: 10px;" title="Novo" data-toggle="modal" data-target="#modalNovo"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo</button>
+
+        <table id="dataTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th class="col-sm-3">Usuario</th>
+                    <th class="col-sm-2">Opções</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var usuario in Model)
+                {
+                    <tr>
+                        <td>@usuario.nome</td>
+                        <td>@usuario.usuario</td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-sm" title="Detalhar" onclick="functionDetalharUsuario(@usuario.idUsuario)"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-warning btn-sm" title="Editar" data-toggle="modal" data-target="#modalEditar"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-danger btn-sm" title="Deletar" data-toggle="modal" data-target="#modalDeletar-@usuario.idUsuario"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                        </td>
+                    </tr>
+
+                    <div class="modal fade" id="modalDeletar-@usuario.idUsuario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Deletar Usuario</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h2>Deseja realmente deletar o usuario: @usuario.nome?</h2>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" onclick="functionDeletarUsuario(@usuario.idUsuario)">Sim</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+
+@* MODEL DETALHAR USUARIO *@
+<div class="modal fade" id="modalDetalhar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Detalhar Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="control-label">Id:</label>
+                    <span id="idUsuarioDetalhar"></span>
+                </div>
+
+                <div class="row">
+                    <label class="control-label">Nome:</label>
+                    <span id="nomeUsuarioDetalhar"></span>
+                </div>
+
+                <div class="row">
+                    <label class="control-label">Usuario:</label>
+                    <span id="usuarioUsuarioDetalhar"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* MODEL NOVO USUARIO *@
+<div class="modal fade" id="modalNovo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="control-label">Nome:</label>
+                    <input type="text" id="nomeNovoUsuario" value="" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <label class="control-label">Usuario:</label>
+                    <input type="text" id="usuarioNovoUsuario" value="" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <label class="control-label">Senha:</label>
+                    <input type="password" id="senhaNovoUsuario" value="" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="buttonNovoUsuario">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" lang="pt-br">
+
+        function functionDetalharUsuario(id) {
+
+            $.ajax({
+                url: 'http://localhost:52986/api/Usuario/' + id,
+                type: 'GET',
+                dataType: "json",
+                success: function (data) {
+                    $("#idUsuarioDetalhar").html(data.idUsuario);
+                    $("#nomeUsuarioDetalhar").html(data.nome);
+                    $("#usuarioUsuarioDetalhar").html(data.usuario);
+
+                    $("#modalDetalhar").modal("show");
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        };
+
+        $(document).on("click", "#buttonNovoUsuario", function () {
+            var nome = $("#nomeNovoUsuario").val();
+            var usuario = $("#usuarioNovoUsuario").val();
+            var senha = $("#senhaNovoUsuario").val();
+
+            if (nome != "" && usuario != "" && senha != "") {
+
+                var usuarioPost = {
+                    nome: nome,
+                    usuario: usuario,
+                    senha: senha
+                };
+
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(usuarioPost),
+                    url: "http://localhost:52986/api/Usuario",
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function () {
+                        $("#modalNovo").modal("hide");
+                        alert("Usuario adicionado com sucesso.");
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Erro, tente novamanete!");
+                    }
+                });
+            }
+            else
+            {
+                alert("Todos os campos devem estar preenchidos!");
+            }
+        });
+
+        function functionDeletarUsuario(id)
+        {
+            $.ajax({
+                url: 'http://localhost:52986/api/Usuario/' + id,
+                type: 'DELETE',
+                success: function (data) {
+                    alert("Usuario deletado com sucesso.");
+                    location.reload();
+                },
+                error: function (data) {
+                    alert("Erro ao deletar o usuario, tente novamente!");
+                }
+            });
+
+            $("#modalDeletar").modal("hide");
+        }
+    </script>
+}
