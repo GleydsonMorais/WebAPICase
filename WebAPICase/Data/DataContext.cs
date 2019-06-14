@@ -29,11 +29,13 @@ namespace WebAPICase.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new UsuarioMap());
+            modelBuilder.Configurations.Add(new HistoricoMap());
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Historico> Historico { get; set; }
 
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : class
         {

@@ -5,17 +5,17 @@ nome						varchar(150) NOT NULL
 usuario						varchar(50) NOT NULL
 senha						varchar(25) NOT NULL
 
-HistoricoCombustivel
+Historico
 
-idHistCombustivel			int NOT NULL
+idHistorico					int NOT NULL
 regiao						varchar(2) NOT NULL
 estado						varchar(2) NOT NULL
-municipio					varchar(80) NOT NULL 
+municipio					varchar(120) NOT NULL 
 revenda						varchar(250) NOT NULL
-instalacao					varchar(10) NOT NULL
+instalacaoCodigo			varchar(10) NOT NULL
 produto						varchar(50) NOT NULL
 dataColeta					date NOT NULL
 valorCompra					decimal(5,2) NOT NULL
 valorVenda					decimal(5,2) NULL
 undMedida					varchar(15) NOT NULL
-bandeira					varchar(80) NOT NULL
+bandeira					varchar(120) NOT NULL

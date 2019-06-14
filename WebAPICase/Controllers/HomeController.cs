@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +13,9 @@ namespace WebAPICase.Controllers
     {
         //Objeto API USUARIO
         UsuarioController apiUsuario = new UsuarioController();
+
+        //Objeto API HISTORICO
+        HistoricoController apiHistorico = new HistoricoController();
 
         //DATACONTEXT
         DataContext dataContext = new DataContext();
@@ -73,6 +77,51 @@ namespace WebAPICase.Controllers
                 var listUsusario = apiUsuario.GetAllUsuario();
 
                 return View(listUsusario);
+            }
+            else
+            {
+                TempData["warning"] = "Sessão não foi iniciada!!";
+
+                return View("Index");
+            }
+        }
+
+        public ActionResult Historico()
+        {
+            if (Session["NomeUsuario"] != null)
+            {
+                var listHistorico = apiHistorico.Get();
+
+                return View(listHistorico);
+            }
+            else
+            {
+                TempData["warning"] = "Sessão não foi iniciada!!";
+
+                return View("Index");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ImportarHistorico(HttpPostedFileBase[] Arquivos)
+        {
+            if (Session["NomeUsuario"] != null)
+            {
+                foreach (var arquivo in Arquivos)
+                {
+                    List<Historico> listHistorico = new List<Historico>();
+
+                    string conteudo = string.Empty;
+                    string registro = string.Empty;
+
+                    using (StreamReader reader = new StreamReader(arquivo.InputStream))
+                    {
+                        conteudo = reader.ReadLine();
+
+                    }
+                }
+
+                return View("Historico");
             }
             else
             {

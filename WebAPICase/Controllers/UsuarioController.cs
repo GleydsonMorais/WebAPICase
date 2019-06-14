@@ -13,6 +13,8 @@ namespace WebAPICase.Controllers
     {
         DataContext dataContext = new DataContext();
 
+        Usuario usuario = new Usuario();
+
         // GET: api/Usuario
         [HttpGet]
         public IEnumerable<Usuario> GetAllUsuario()
@@ -38,8 +40,11 @@ namespace WebAPICase.Controllers
         }
 
         // PUT: api/Usuario/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public void Put(int id, [FromBody]Usuario usuario)
         {
+            dataContext.Entry(usuario).State = System.Data.Entity.EntityState.Modified;
+            dataContext.SaveChanges();
         }
 
         // DELETE: api/Usuario/5
