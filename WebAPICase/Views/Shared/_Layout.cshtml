@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿    <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -130,7 +130,7 @@
             @using (Html.BeginForm("ImportarHistorico", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
             {
                 <div class="modal-body">
-                    <input type="file" name="Arquivo" multiple="multiple" id="Arquivos" data-ng-model="arquivo" file-model="arquivo">
+                    <input type="file" name="Arquivo" accept="application/csv" id="Arquivos" data-ng-model="arquivo" file-model="arquivo">
                 </div>
 
                 <div class="modal-footer">

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WebAPICase.Data;
@@ -103,25 +106,112 @@ namespace WebAPICase.Controllers
         }
 
         [HttpPost]
-        public ActionResult ImportarHistorico(HttpPostedFileBase[] Arquivos)
+        public ActionResult ImportarHistorico(HttpPostedFileBase arquivo)
         {
             if (Session["NomeUsuario"] != null)
             {
-                foreach (var arquivo in Arquivos)
+                char separador = ';';
+                Encoding encoding = Encoding.GetEncoding(CultureInfo.GetCultureInfo("pt-BR").TextInfo.ANSICodePage);
+                StreamReader leitor = null;
+                string[] dados = null;
+                string linha = null;
+                string[] campos = null;
+
+                try
                 {
+                    leitor = new StreamReader(arquivo.InputStream, encoding);
+                    linha = leitor.ReadLine();
+                    campos = linha.Split(separador);
+
+                    linha = leitor.ReadLine();
+
                     List<Historico> listHistorico = new List<Historico>();
 
-                    string conteudo = string.Empty;
-                    string registro = string.Empty;
-
-                    using (StreamReader reader = new StreamReader(arquivo.InputStream))
+                    do
                     {
-                        conteudo = reader.ReadLine();
+                        Historico historico = new Historico();
 
+                        dados = linha.Split(separador);
+                        decimal valorCompra = 0;
+
+                        for (int i = 0; i < dados.Length && i < campos.Length ; i++)
+                        {
+
+                            switch (campos[i].ToUpper())
+                            {
+                                case "REGIÃO - SIGLA":
+                                    historico.regiao = dados[i].ToUpper();
+                                    break;
+                                case "ESTADO - SIGLA":
+                                    historico.estado = dados[i].ToUpper();
+                                    break;
+                                case "MUNICÍPIO":
+                                    historico.municipio = dados[i].ToUpper();
+                                    break;
+                                case "REVENDA":
+                                    historico.revenda = dados[i].ToUpper();
+                                    break;
+                                case "INSTALAÇÃO - CÓDIGO":
+                                    historico.instalacaoCodigo = dados[i];
+                                    break;
+                                case "PRODUTO":
+                                    historico.produto = dados[i].ToUpper();
+                                    break;
+                                case "DATA DA COLETA":
+                                    historico.dataColeta = DateTime.Parse(dados[i]);
+                                    break;
+                                case "VALOR DE COMPRA":
+                                    if (dados[i] != "")
+                                    {
+                                        historico.valorCompra = Convert.ToDecimal(dados[i]);
+                                    }
+                                    else
+                                    {
+                                        historico.valorCompra = valorCompra;
+                                    }
+                                    break;
+                                case "VALOR DE VENDA":
+                                    historico.valorVenda = Convert.ToDecimal(dados[i]);
+                                    break;
+                                case "UNIDADE DE MEDIDA":
+                                    historico.undMedida = dados[i];
+                                    break;
+                                case "BANDEIRA":
+                                    historico.bandeira = dados[i].ToUpper();
+                                    break;
+                            }
+                        }
+
+                        //adiciona o hostorio a lista
+                        listHistorico.Add(historico);
+
+                        //le a proxima linha
+                        linha = leitor.ReadLine();
+
+                    } while (!string.IsNullOrEmpty(linha));
+
+                    if (listHistorico.Count() > 0)
+                    {
+                        dataContext.Historico.AddRange(listHistorico);
+                        dataContext.SaveChanges();
+
+                        TempData["success"] = "Historico importado com sucesso!!";
+
+                        return RedirectToAction("Historico");
+                    }
+                    else
+                    {
+                        TempData["warning"] = "O arquivo esta em braco!!";
+
+                        return View("Admin");
                     }
                 }
+                catch (Exception e)
+                {
+                    TempData["warning"] = "Erro ao importar o arquivo de historico, tente novamente!!";
 
-                return View("Historico");
+                    return View("Admin");
+                }
             }
             else
             {
