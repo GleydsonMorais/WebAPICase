@@ -10,9 +10,6 @@ namespace WebAPICase.Data
 {
     public class DataContext : DbContext
     {
-        //HOST-INFOPUBLIC - (APAGAR)
-        //static private string stringConnection = "Data Source=HOST-INFOPUBLIC;Initial Catalog=DBEntidade;User ID=Infopublic;Password=#info8116*;Connect Timeout=15;Encrypt=False;Packet Size=8000;MultipleActiveResultSets=True;Application Name=EntityFramework;Integrated Security=False";
-
         //HOST Casa
         static private string stringConnection = "Data Source=DESKTOP-4P8TIR2;Initial Catalog=WebAPICase;User ID=sa;Password=un1form.;Connect Timeout=15;Encrypt=False;Packet Size=8000;MultipleActiveResultSets=True;Application Name=EntityFramework;Integrated Security=False";
 
