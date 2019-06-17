@@ -314,7 +314,7 @@
                 $.ajax({
                     type: "POST",
                     data: JSON.stringify(historicoPost),
-                    url: "http://localhost:52986/api/Historico",
+                    url: "http://localhost:52986/api/Historico/Post",
                     dataType: "json",
                     contentType: "application/json",
                     success: function () {
@@ -335,7 +335,7 @@
         function functionDetalharHistorico(id) {
 
             $.ajax({
-                url: 'http://localhost:52986/api/Historico/' + id,
+                url: 'http://localhost:52986/api/Historico/Get/' + id,
                 type: 'GET',
                 dataType: "json",
                 success: function (data) {
@@ -363,7 +363,7 @@
         function functionEditarHistorico(id) {
             
             $.ajax({
-                url: 'http://localhost:52986/api/Historico/' + id,
+                url: 'http://localhost:52986/api/Historico/Get/' + id,
                 type: 'GET',
                 dataType: "json",
                 success: function (data) {
@@ -424,7 +424,7 @@
                 var id = idHistorico;
 
                 $.ajax({
-                    url: 'http://localhost:52986/api/Historico/' + id,
+                    url: 'http://localhost:52986/api/Historico/Put/' + id,
                     type: "PUT",
                     contentType: "application/json; charset=utf-8",
                     data: usuario,
@@ -447,7 +447,7 @@
     function functionDeletarHistorico(id) {
 
             $.ajax({
-                url: 'http://localhost:52986/api/Historico/' + id,
+                url: 'http://localhost:52986/api/Historico/Delete/' + id,
                 type: 'DELETE',
                 success: function (data) {
                     alert("Historico deletado com sucesso.");
