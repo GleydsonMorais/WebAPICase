@@ -17,7 +17,7 @@ namespace WebAPICase.Controllers
 
         // GET: api/Usuario
         [HttpGet]
-        public IEnumerable<Usuario> GetAllUsuario()
+        public IEnumerable<Usuario> Get()
         {
             var listUsuario = dataContext.Usuario.AsQueryable();
 
@@ -49,7 +49,7 @@ namespace WebAPICase.Controllers
 
         // DELETE: api/Usuario/5
         [HttpDelete]
-        public void DeleteUsuario(int id)
+        public void Delete(int id)
         {
             var usuario = dataContext.Usuario.Where(u => u.idUsuario == id).FirstOrDefault();
             dataContext.Usuario.Remove(usuario);

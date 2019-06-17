@@ -181,8 +181,8 @@ C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\bi
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\bin\pt-br\System.Web.WebPages.resources.dll
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\bin\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\bin\pt-br\System.Web.WebPages.Razor.resources.dll
-C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\obj\Debug\WebAPICase.csprojAssemblyReference.cache
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\obj\Debug\WebAPICase.csproj.CoreCompileInputs.cache
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\obj\Debug\WebAPICase.csproj.CopyComplete
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\obj\Debug\WebAPICase.dll
 C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\obj\Debug\WebAPICase.pdb
+C:\Users\Fernanda\Documents\Visual Studio 2019\Projetos\WebAPICase\WebAPICase\obj\Debug\WebAPICase.csprojAssemblyReference.cache

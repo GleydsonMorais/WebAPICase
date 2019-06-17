@@ -150,7 +150,7 @@
         function functionDetalharUsuario(id) {
 
             $.ajax({
-                url: 'http://localhost:52986/api/Usuario/' + id,
+                url: 'http://localhost:52986/api/Usuario/Get/' + id,
                 type: 'GET',
                 dataType: "json",
                 success: function (data) {
@@ -182,7 +182,7 @@
                 $.ajax({
                     type: "POST",
                     data: JSON.stringify(usuarioPost),
-                    url: "http://localhost:52986/api/Usuario",
+                    url: "http://localhost:52986/api/Usuario/Post",
                     dataType: "json",
                     contentType: "application/json",
                     success: function () {
@@ -202,7 +202,7 @@
 
         function functionDeletarUsuario(id) {
             $.ajax({
-                url: 'http://localhost:52986/api/Usuario/' + id,
+                url: 'http://localhost:52986/api/Usuario/Delete/' + id,
                 type: 'DELETE',
                 success: function (data) {
                     alert("Usuario deletado com sucesso.");
@@ -219,7 +219,7 @@
         function functionEditarUsuario(id) {
 
             $.ajax({
-                url: 'http://localhost:52986/api/Usuario/' + id,
+                url: 'http://localhost:52986/api/Usuario/Get/' + id,
                 type: 'GET',
                 dataType: "json",
                 success: function (data) {
@@ -254,7 +254,7 @@
                 var id = idUsuario;
 
                 $.ajax({
-                    url: 'http://localhost:52986/api/Usuario/' + id,
+                    url: 'http://localhost:52986/api/Usuario/Put/' + id,
                     type: "PUT",
                     contentType: "application/json; charset=utf-8",
                     data: usuario,

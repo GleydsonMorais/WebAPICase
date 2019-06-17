@@ -49,5 +49,77 @@ namespace WebAPICase.Controllers
             dataContext.Historico.Remove(historico);
             dataContext.SaveChanges();
         }
+
+        [HttpGet]
+        public IEnumerable<string[]> MediaCombustivelVendaPorMunicipio()
+        {
+            List<string[]> result = new List<string[]>();
+
+            var listMunicipio = dataContext.Historico.ToList().OrderBy(h => h.municipio).Select(m => m.municipio).Distinct();
+
+            foreach (var municipio in listMunicipio)
+            {
+                //Primeiro campor é o nome do municipio e o segundo é o valor de venda
+                result.Add(new string[] { municipio, "R$ " + dataContext.Historico.Where(h => h.municipio == municipio).Average(m => m.valorVenda).ToString() });
+            }
+
+            return result;
+        }
+
+        [HttpGet]
+        public IEnumerable<IEnumerable<Historico>> HistoricoPorRegiao()
+        {
+            var listHistorico = dataContext.Historico.GroupBy(h => h.regiao).Select(grp => grp.ToList()).ToList();
+
+            return listHistorico;
+        }
+
+        [HttpGet]
+        public IEnumerable<IEnumerable<Historico>> HistoricoPorDistribuidora()
+        {
+            var listHistorico = dataContext.Historico.GroupBy(h => h.revenda).Select(grp => grp.ToList()).ToList();
+
+            return listHistorico;
+        }
+
+        [HttpGet]
+        public IEnumerable<IEnumerable<Historico>> HistoricoPorDataColeta()
+        {
+            var listHistorico = dataContext.Historico.GroupBy(h => h.dataColeta).Select(grp => grp.ToList()).ToList();
+
+            return listHistorico;
+        }
+
+        [HttpGet]
+        public IEnumerable<string[]> MediaCombustivelCompravendaPorMunicipio()
+        {
+            List<string[]> result = new List<string[]>();
+
+            var listMunicipio = dataContext.Historico.ToList().OrderBy(h => h.municipio).Select(m => m.municipio).Distinct();
+
+            foreach (var municipio in listMunicipio)
+            {
+                //Primeiro campor é o nome do municipio, o segundo é o valor de compra e o terceiro é o valor de venda
+                result.Add(new string[] { municipio, "R$ " + dataContext.Historico.Where(h => h.municipio == municipio).Average(m => m.valorCompra).ToString(), "R$ " + dataContext.Historico.Where(h => h.municipio == municipio).Average(m => m.valorVenda).ToString() });
+            }
+
+            return result;
+        }
+
+        [HttpGet]
+        public IEnumerable<string[]> MediaCombustivelCompravendaPorBandeira()
+        {
+            List<string[]> result = new List<string[]>();
+
+            var listBandeira = dataContext.Historico.ToList().OrderBy(h => h.bandeira).Select(m => m.bandeira).Distinct();
+
+            foreach (var bandeira in listBandeira)
+            {
+                //Primeiro campor é o nome da bandeira, o segundo é o valor de compra e o terceiro é o valor de venda
+                result.Add(new string[] { bandeira, "R$ " + dataContext.Historico.Where(h => h.bandeira == bandeira).Average(m => m.valorCompra).ToString(), "R$ " + dataContext.Historico.Where(h => h.bandeira == bandeira).Average(m => m.valorVenda).ToString() });
+            }
+
+            return result;
+        }
     }
 }
